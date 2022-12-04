@@ -34,3 +34,9 @@ From *Master* node:
 echo "http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):20001/kiali"  # true public url to open dashboard
 istioctl dashboard kiali --browser=false --address $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) # istioctl listening on local ip
 ```
+
+### Helm
+
+```
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
