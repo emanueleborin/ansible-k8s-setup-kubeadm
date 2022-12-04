@@ -24,4 +24,13 @@ This is a very simple playbook. It deploys the following:
 4. Adds three networks (see group_vars/all)
 5. Adds two sample applications (guestbook and wordpress)
 
+### Start istio dashboard with access from ec2 instance public ip 
 
+EC2 instances don't know their public ip address (it's managed by AWS infrastructure), so you have to get it from metadata.
+
+From *Master* node:
+
+```
+echo "http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):20001/kiali"  # true public url to open dashboard
+istioctl dashboard kiali --browser=false --address $(curl -s http://169.254.169.254/latest/meta-data/local-ipv4) # istioctl listening on local ip
+```
