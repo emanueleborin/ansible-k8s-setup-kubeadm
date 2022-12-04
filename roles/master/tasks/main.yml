@@ -1,11 +1,13 @@
 ---
 - name: Reset kubeadm before init in case this is not the first run
-  command: kubeadm reset
+  command: kubeadm reset --force
   when: kubeadm_reset_before_init
-  
+
 - name: kubeadm init with pre generated token
-  command: kubeadm init --token {{ kubeadm_token }} --service-cidr 10.96.0.0/12
-  
+  # command: kubeadm init --token {{ kubeadm_token }} --service-cidr 10.96.0.0/12
+  # command: kubeadm init --pod-network-cidr=10.244.0.0/16 --token {{ kubeadm_token }} # for Flannel
+  command: kubeadm init --token {{ kubeadm_token }}
+
 - name: wait for kubernetes to become active.
   wait_for:
     port: 6443
@@ -13,14 +15,17 @@
     timeout: 300
 
 - name: allow permissive RBAC rules
-  command: "kubectl --kubeconfig /etc/kubernetes/admin.conf create clusterrolebinding permissive-binding \
-  --clusterrole=cluster-admin \
-  --user=admin \
-  --user=kubelet \
-  --group=system:serviceaccounts"
+  command: >-
+    kubectl --kubeconfig /etc/kubernetes/admin.conf create clusterrolebinding permissive-binding 
+    --clusterrole=cluster-admin
+    --user=admin
+    --user=kubelet
+    --group=system:serviceaccounts
 
-- name: taint master node
-  command: kubectl --kubeconfig /etc/kubernetes/admin.conf taint nodes --all node-role.kubernetes.io/master-
+# This was to allow scheduling also on control-plane, but we have at least 2 worker to schedule on (master was the old name of control-plane)
+# - name: taint master node
+#   command: kubectl --kubeconfig /etc/kubernetes/admin.conf taint nodes --all node-role.kubernetes.io/master-
+#   command: kubectl --kubeconfig /etc/kubernetes/admin.conf taint nodes --all node-role.kubernetes.io/control-plane-
 
 - name: create .kube dir
   file:
@@ -38,6 +43,13 @@
     group: "{{ ansible_remote_user }}"
     force: yes
     mode: 0400
+
+- name: create root .kube dir
+  file:
+    path: /root/.kube
+    state: directory
+    owner: root
+    group: root
 
 - name: copy config file to root/.kube dir
   copy: 

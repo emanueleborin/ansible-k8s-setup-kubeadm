@@ -1,5 +1,5 @@
 - name: Install and Update Python
-  raw: sudo bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python-minimal)"
+  raw: sudo bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python-is-python3)"
  
 - name: Run the equivalent of "apt-get update" as a separate step
   apt:

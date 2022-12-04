@@ -1,6 +1,6 @@
 ---
 - name: Reset kubeadm before init in case this is not the first run
-  command: kubeadm reset
+  command: kubeadm reset --force
   when: kubeadm_reset_before_init
 
 - name: kubeadm join with pre generated token

@@ -4,7 +4,7 @@
 - name: Deploy Sample Applications
   hosts: master
   remote_user: "{{ ansible_remote_user }}"
-  become: yes
+  become: true
   become_method: sudo
   roles:
     - { role: sample_apps, when: deploy_sample_apps }

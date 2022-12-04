@@ -1,7 +1,9 @@
 
 kubeadm_token: db85f7.cff657b31b20eed5
 
-master_ip: "{{ hostvars['master1']['ansible_eth0']['ipv4']['address'] }}"
+# If for some reason your network interface is not eth0 you will need to update the master_ip variable.
+#master_ip: "{{ hostvars['master1']['ansible_eth0']['ipv4']['address'] }}"
+master_ip: "{{ hostvars['master1']['ansible_ens5']['ipv4']['address'] }}"
 
 ansible_remote_user: ubuntu
 
