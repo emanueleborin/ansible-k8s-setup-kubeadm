@@ -1,4 +1,4 @@
-# Basic Install of Kubernetes and Contiv Networking
+# Basic Install of Kubernetes with Networking
 ## standalone kubeadm deployment
 ### Orignal code credit goes to https://github.com/ben-st/ansible-kubeadm. I used it as a base and changed the CNI to Contiv (by Cisco).
 
